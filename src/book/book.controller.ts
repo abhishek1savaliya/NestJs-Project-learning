@@ -1,9 +1,10 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, Req, UseGuards } from '@nestjs/common';
 import { BookService } from './book.service';
 import { Book } from './schemas/book.schemas';
 import { createBookDTO } from './dto/create-book.dto';
 import { updateBookDTO } from './dto/update-book.dto';
 import { Query as ExpressQuery } from 'express-serve-static-core'
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('books')
 export class BookController {
@@ -16,8 +17,10 @@ export class BookController {
     }
 
     @Post()
-    async createBook(@Body() book: createBookDTO): Promise<Book> {
-        return this.bookService.create(book)
+    @UseGuards(AuthGuard())
+    async createBook(@Body() book: createBookDTO, @Req() req): Promise<Book> {
+
+        return this.bookService.create(book, req.user)
     }
 
     @Get(':id')
