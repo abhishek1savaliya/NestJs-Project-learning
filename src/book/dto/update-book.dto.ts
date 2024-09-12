@@ -1,6 +1,6 @@
 import { IsEmpty, IsEnum, IsNumber, IsOptional, IsString } from "class-validator";
 import { Category } from "../schemas/book.schemas";
-import { User } from "src/auth/schemas/user.schems";
+import { User } from "src/auth/schemas/user.schemas";
 
 export class updateBookDTO {
 

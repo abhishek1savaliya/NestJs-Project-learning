@@ -3,7 +3,7 @@ import * as mongoose from 'mongoose'
 import { Book } from './schemas/book.schemas';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { Query } from 'express-serve-static-core'
-import { User } from 'src/auth/schemas/user.schems';
+import { User } from 'src/auth/schemas/user.schemas';
 @Injectable()
 export class BookService {
     constructor(
