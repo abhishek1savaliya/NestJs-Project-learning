@@ -5,6 +5,9 @@ import { createBookDTO } from './dto/create-book.dto';
 import { updateBookDTO } from './dto/update-book.dto';
 import { Query as ExpressQuery } from 'express-serve-static-core'
 import { AuthGuard } from '@nestjs/passport';
+import { Roles } from 'src/auth/decorators/roles.decorators';
+import { Role } from 'src/auth/enums/role.enum';
+import { RolesGaurd } from 'src/auth/gaurds/roles.gaurd';
 
 @Controller('books')
 export class BookController {
@@ -12,6 +15,8 @@ export class BookController {
     constructor(private bookService: BookService) { }
 
     @Get()
+    @Roles(Role.Admin)
+    @UseGuards(AuthGuard(), RolesGaurd)
     async getAll(@Query() query: ExpressQuery): Promise<Book[]> {
         return this.bookService.findAll(query)
     }
