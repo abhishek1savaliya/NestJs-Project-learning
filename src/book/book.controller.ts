@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, Req, UploadedFiles, UseGuards, UseInterceptors } from '@nestjs/common';
 import { BookService } from './book.service';
 import { Book } from './schemas/book.schemas';
 import { createBookDTO } from './dto/create-book.dto';
@@ -8,6 +8,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { Roles } from 'src/auth/decorators/roles.decorators';
 import { Role } from 'src/auth/enums/role.enum';
 import { RolesGaurd } from 'src/auth/gaurds/roles.gaurd';
+import { FilesInterceptor } from '@nestjs/platform-express';
 
 @Controller('books')
 export class BookController {
@@ -24,7 +25,6 @@ export class BookController {
     @Post()
     @UseGuards(AuthGuard())
     async createBook(@Body() book: createBookDTO, @Req() req): Promise<Book> {
-
         return this.bookService.create(book, req.user)
     }
 
@@ -46,4 +46,18 @@ export class BookController {
         return this.bookService.deleteById(id)
     }
 
+    @Put('upload/:id')
+    @UseGuards(AuthGuard())
+    @UseInterceptors(FilesInterceptor('files'))
+    async uploadImages(
+        @Param('id') id: string,
+        @UploadedFiles() files: Array<Express.Multer.File>
+    ) {
+        console.log(id)
+        console.log(files);
+        return
+    }
 }
+
+
+
